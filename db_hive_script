@@ -6,7 +6,7 @@ use etl_hd;
 
 CREATE TABLE `pogoda_w` (
  `id` int,
- `pogoda` string)
+ `nazwa` string)
 ROW FORMAT SERDE
  'org.apache.hadoop.hive.ql.io.orc.OrcSerde'
 STORED AS INPUTFORMAT
@@ -26,7 +26,7 @@ OUTPUTFORMAT
  'org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat';
  
 CREATE TABLE `date_w` (
- `date` date,
+ `data` date,
  `dzien_tygodnia` string)
 ROW FORMAT SERDE
  'org.apache.hadoop.hive.ql.io.orc.OrcSerde'

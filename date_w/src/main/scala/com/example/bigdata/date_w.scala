@@ -1,15 +1,10 @@
-package com.exmaple.bigdata
-
+package com.example.bigdata
 
 import java.time.LocalDate
 
 import org.apache.spark.SparkConf
-import org.apache.spark.SparkContext
-import org.apache.spark.sql.SQLContext
 import java.time.format.DateTimeFormatter
-import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
-import org.apache.spark.sql.SQLImplicits
 import org.apache.spark.sql.SparkSession
 
 object date_w {
@@ -17,7 +12,7 @@ object date_w {
   def main(args: Array[String]) {
     val path = args(0)
 
-    val conf: SparkConf = new SparkConf().setAppName("SparkWordCount")
+    val conf: SparkConf = new SparkConf().setAppName("date_w")
 
     val spark: SparkSession = SparkSession.builder().
       config(conf).

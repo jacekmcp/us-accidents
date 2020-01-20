@@ -1,0 +1,65 @@
+DROP DATABASE IF EXISTS etl_hd CASCADE;
+
+create database etl_hd;
+
+use etl_hd;
+
+CREATE TABLE `pogoda_w` (
+ `id` int,
+ `pogoda` string)
+ROW FORMAT SERDE
+ 'org.apache.hadoop.hive.ql.io.orc.OrcSerde'
+STORED AS INPUTFORMAT
+ 'org.apache.hadoop.hive.ql.io.orc.OrcInputFormat'
+OUTPUTFORMAT
+ 'org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat';
+ 
+CREATE TABLE `geo_w` (
+ `id` int,
+ `state` string,
+ `timezone` string)
+ROW FORMAT SERDE
+ 'org.apache.hadoop.hive.ql.io.orc.OrcSerde'
+STORED AS INPUTFORMAT
+ 'org.apache.hadoop.hive.ql.io.orc.OrcInputFormat'
+OUTPUTFORMAT
+ 'org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat';
+ 
+CREATE TABLE `date_w` (
+ `date` date,
+ `dzien_tygodnia` string)
+ROW FORMAT SERDE
+ 'org.apache.hadoop.hive.ql.io.orc.OrcSerde'
+STORED AS INPUTFORMAT
+ 'org.apache.hadoop.hive.ql.io.orc.OrcInputFormat'
+OUTPUTFORMAT
+ 'org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat';
+ 
+CREATE TABLE `dystans_w` (
+ `id` int,
+ `dystans` string)
+ROW FORMAT SERDE
+ 'org.apache.hadoop.hive.ql.io.orc.OrcSerde'
+STORED AS INPUTFORMAT
+ 'org.apache.hadoop.hive.ql.io.orc.OrcInputFormat'
+OUTPUTFORMAT
+ 'org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat';
+ 
+ CREATE TABLE `fakty_f` (
+ `date` date,
+ `zip_code` string,
+ `id_dystans` int,
+ `id_pogoda` int,
+ `severity` int, 
+ `POI_count` int, 
+ `liczba_zdarzen` int, 
+ `suma_dyst` int, 
+ `suma_czasow_trwania` int)
+ROW FORMAT SERDE
+ 'org.apache.hadoop.hive.ql.io.orc.OrcSerde'
+STORED AS INPUTFORMAT
+ 'org.apache.hadoop.hive.ql.io.orc.OrcInputFormat'
+OUTPUTFORMAT
+ 'org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat';
+ 
+ 

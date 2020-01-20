@@ -196,7 +196,7 @@ object fakty_f {
     val all_Facts = main_All_DS.
       join(pom_dist_DS, $"Distance(mi)" === $"dystans").
       join(pom_geo_DS, $"Zipcode" === $"geoZipcode").
-      join(pom_weather_DS, unix_timestamp($"w_date")>=unix_timestamp($"Start_Time") && unix_timestamp($"w_date")<=unix_timestamp($"End_Time") && $"w_code" === $"Airport_Code", "LeftOuter").
+      join(pom_weather_DS, unix_timestamp($"w_date")>=unix_timestamp($"Start_Time")-3600 && unix_timestamp($"w_date")<=unix_timestamp($"End_Time")+3600 && $"w_code" === $"Airport_Code", "LeftOuter").
       dropDuplicates("Start_Time").
       select(
         $"Start_Date".as("Date"),

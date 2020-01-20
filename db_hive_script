@@ -45,16 +45,15 @@ STORED AS INPUTFORMAT
 OUTPUTFORMAT
  'org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat';
  
- CREATE TABLE `fakty_f` (
+CREATE TABLE `fakty_f` (
  `date` date,
- `zip_code` string,
- `id_dystans` int,
- `id_pogoda` int,
- `severity` int, 
- `POI_count` int, 
- `liczba_zdarzen` int, 
- `suma_dyst` int, 
- `suma_czasow_trwania` int)
+ `state` string,
+ `severity` int,
+ `distance_id` int,
+ `weather_id` int,
+ `accidents_count` int,
+ `distance_sum` int,
+ `duration_sum` int)
 ROW FORMAT SERDE
  'org.apache.hadoop.hive.ql.io.orc.OrcSerde'
 STORED AS INPUTFORMAT

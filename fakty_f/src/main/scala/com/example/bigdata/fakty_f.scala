@@ -1,4 +1,4 @@
-package com.examaple.bigdata
+package com.example.bigdata
 
 import org.apache.spark.SparkConf
 

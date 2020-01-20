@@ -109,7 +109,7 @@ object fakty_f {
     val geoDataMountain_DS = spark.read.format("org.apache.spark.csv").option("header", true).option("inferSchema", true).csv(path + "/geoDataMountain.csv").cache
     val geoDataPacific_DS = spark.read.format("org.apache.spark.csv").option("header", true).option("inferSchema", true).csv(path + "/geoDataPacific.csv").cache
     val allGeoData_DS = geoDataCentral_DS
-     .union(geoDataEastern_DS).union(geoDataMountain_DS).union(geoDataPacific_DS)
+      .union(geoDataEastern_DS).union(geoDataMountain_DS).union(geoDataPacific_DS)
 
     ////////////////////////FACTS DATA//////////////////////////
 
@@ -173,7 +173,7 @@ object fakty_f {
     )
 
     val main_All_DS=main_Central_DS
-     .union(main_Eastern_DS).union(main_Mountain_DS).union(main_Pacific_DS)
+      .union(main_Eastern_DS).union(main_Mountain_DS).union(main_Pacific_DS)
 
 
     ////////////////////////////////TEMPORARY_TABLES/////////////////////////
@@ -182,13 +182,13 @@ object fakty_f {
 
     val pom_geo_DS = allGeoData_DS.withColumnRenamed("Zipcode", "geoZipcode").select("geoZipcode", "State")
 
-    val pom_weather_wymiar = weather_wymiar.withColumnRenamed("id", "id_weather").withColumnRenamed("nazwa", "nazwa_pogody").select("id_weather", "nazwa_pogody")
+    val pom_weather_wymiar = weather_wymiar.withColumnRenamed("id", "weather_id").withColumnRenamed("nazwa", "nazwa_pogody").select("weather_id", "nazwa_pogody")
 
     val pom_weather_DS = weather_data.
       withColumnRenamed("Code", "w_code").
       withColumnRenamed("date", "w_date").
       join(pom_weather_wymiar, $"weather" === $"nazwa_pogody").
-      select("w_code", "w_date", "weather", "id_weather");
+      select("w_code", "w_date", "weather", "weather_id");
 
     /////////////////////////CREATE FACTS//////////////////////
 
@@ -198,24 +198,24 @@ object fakty_f {
       join(pom_weather_DS, unix_timestamp($"w_date")>=unix_timestamp($"Start_Time")-3600 && unix_timestamp($"w_date")<=unix_timestamp($"End_Time")+3600 && $"w_code" === $"Airport_Code", "LeftOuter").
       dropDuplicates("Start_Time").
       select(
-        $"Start_Date".as("Date"),
+        $"Start_Date".as("date"),
+        $"State".as("state"),
         $"Start_Time",
         $"End_Time",
-        $"Severity",
+        $"Severity".as("severity"),
         $"Distance(mi)".as("Distance"),
-        $"id_dist".as("Distance_Category"),
-        $"id_weather",
-        $"State").
+        $"id_dist".as("distance_id"),
+        $"weather_id").
       withColumn("Length_in_sec", (unix_timestamp($"End_Time") - unix_timestamp($"Start_Time"))).
-      groupBy($"Date",
-        $"State",
-        $"Severity",
-        $"Distance_Category"
-        ,$"id_weather"
+      groupBy($"date",
+        $"state",
+        $"severity",
+        $"distance_id"
+        ,$"weather_id"
       ).
-      agg(count($"Severity").as("Accidents_Count"),
-        sum("Distance").as("sum_Distance"),
-        sum("Length_in_sec").as("sum_Duration_Time")
+      agg(count($"severity").as("accidents_count"),
+        sum("Distance").as("distance_sum"),
+        sum("Length_in_sec").as("duration_sum")
       ).drop("Start_Time",
       "geoZipcode",
       "Zipcode",
